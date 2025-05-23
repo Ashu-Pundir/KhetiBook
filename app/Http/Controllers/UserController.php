@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Crop;
+use Flasher\Laravel\Facade\Flasher;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +16,7 @@ class UserController extends Controller
 {
     public function view()
     {
+        Log::info();
         return view('crop.addcrop');
     }
 
@@ -36,10 +38,9 @@ class UserController extends Controller
         $user->phone_number = $request->uphone;
         $user->email = $request->uemail;
         $user->password = Hash::make($request->upassword);
-
         $user->save();
-
-        return redirect()->route('login')->with('success', 'Registration Successfull');
+        Flasher::addSuccess('Registration Successfull');
+        return redirect()->route('login');  
     }
 
 
@@ -50,22 +51,22 @@ class UserController extends Controller
             'phone_number' => 'required|digits:10',
             'password' => 'required',
         ]);
-
         if (Auth::attempt(['phone_number' => $credentials['phone_number'], 'password' => $credentials['password']])) {
             $request->session()->regenerate(); // Prevent session fixation
-            return redirect()->route('crop.dashboard')->with('success', 'Login successful');
+            Flasher::addSuccess('User logged in Successfully');
+            return redirect()->route('crop.dashboard');
         }
-
-        return redirect()->route('login')->with('error', 'Invalid phone number or password');
+        Flasher::addError('Invalid phone number or password');
+        return redirect()->back()->withErrors($credentials)->withInput()->with('form', 'login');;
     }
-
+    
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        return redirect()->route('login')->with('success', 'Logged out successfully');
+        Flasher::addSuccess('Logged out successfully');
+        return redirect()->route('login');
     }
 
 
