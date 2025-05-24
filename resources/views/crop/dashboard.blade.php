@@ -106,6 +106,12 @@
         color: white;
     }
 
+    @media (max-width: 768px) {
+      .sidebar {
+        height: 50%;
+        
+      }
+    }
 
   </style>
 </head>
