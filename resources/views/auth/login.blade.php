@@ -2,54 +2,123 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - Khetibuddy</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Khetibuddy - Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
-      background-color: #1c1c1c;
-      color: #f8f9fa;
+      background: linear-gradient(to right, #a8edea, #fed6e3);
       font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    .auth-box {
-      background-color: #2a2a2a;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.3);
-      width: 100%;
-      max-width: 500px;
+    .login-wrapper {
+      width: 75%;
+      max-width: 900px;
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      border-radius: 16px;
+      padding: 40px;
+    }
+
+    .brand {
+      font-size: 32px;
+      font-weight: bold;
+      color: #28a745;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-title {
+      font-size: 22px;
+      font-weight: 600;
+      color: #444;
+      text-align: center;
+      margin-bottom: 20px;
     }
 
     label {
       font-weight: 500;
+      color: #333;
     }
 
-    .text-danger {
-      font-size: 0.875rem;
+    .form-control {
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 15px;
     }
 
-    a.text-info {
+    .btn-success {
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    .text-info {
+      color: #28a745 !important;
       cursor: pointer;
+    }
+
+    .text-info:hover {
+      text-decoration: underline;
+    }
+
+    .alert ul {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 768px) {
+      .login-wrapper {
+        width: 95%;
+        padding: 30px 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container vh-100 d-flex flex-column justify-content-center align-items-center">
-    <h1 class="mb-4">Khetibuddy</h1>
 
-    <div class="auth-box">
+  <div class="login-wrapper">
+    <div class="brand">Khetibuddy</div>
 
-      <h2 class="mb-3 text-center">Login</h2>
+    <div class="form-title">Login</div>
 
-     
-      
+    @if (session('error'))
+      <div class="alert alert-danger">
+        {{ session('error') }}
+      </div>
+    @endif
 
-      <p class="mt-3 text-center">
-        Don't have an account? 
-        <a href="{{ route('register') }}" class="text-info">Register</a>
-      </p>
-    </div>
+    {{-- @if ($errors->any())
+      <div class="alert alert-danger">
+        <ul class="mb-0">
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+    @endif --}}
+
+    <form method="POST" action="{{ route('login.submit') }}">
+      @csrf
+      <div class="mb-3">
+        <label for="phone">Phone Number</label>
+        <input type="text" class="form-control" name="uphone" id="phone"  maxlength="10" value="{{ old('uphone') }}">
+      </div>
+      <div class="mb-4">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" name="upassword" id="password">
+      </div>
+      <button type="submit" class="btn btn-success w-100">Login</button>
+    </form>
+
+    <p class="mt-3 text-center">
+      Don't have an account? <a class="text-info" onclick="window.location.href='{{ route('register') }}'">Register</a>
+    </p>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>

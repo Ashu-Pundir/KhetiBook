@@ -28,7 +28,7 @@ class UserController extends Controller
             'uname' => 'required|string|max:255',
             'uphone' => 'required|digits:10',
             'uemail' => 'nullable|email|unique:users,email',
-            'upassword' => 'required|min:6',
+            'upassword' => 'required|min:6|max:12',
             'ucpassword' => 'required|same:upassword',
         ]);
         // Log::info('Registration data:', $request->all());
@@ -44,20 +44,27 @@ class UserController extends Controller
     }
 
 
-     public function login(Request $request)
+    public function login(Request $request)
     {
-        Log::info($request);
-        $credentials = $request->validate([
-            'phone_number' => 'required|digits:10',
-            'password' => 'required',
-        ]);
-        if (Auth::attempt(['phone_number' => $credentials['phone_number'], 'password' => $credentials['password']])) {
-            $request->session()->regenerate(); // Prevent session fixation
-            Flasher::addSuccess('User logged in Successfully');
-            return redirect()->route('crop.dashboard');
-        }
-        Flasher::addError('Invalid phone number or password');
-        return redirect()->back()->withErrors($credentials)->withInput()->with('form', 'login');;
+    // Log::info($request);
+
+    $credentials = $request->validate([
+        'uphone' => 'required|digits:10',
+        'upassword' => 'required',
+    ]);
+
+    // Find user by phone number
+    $user = User::where('phone_number', $credentials['uphone'])->first();
+
+    if ($user && Hash::check($credentials['upassword'], $user->password)) {
+        Auth::login($user);
+        $request->session()->regenerate();
+        Flasher::addSuccess('User logged in Successfully');
+        return redirect()->route('crop.dashboard');
+    }
+
+    Flasher::addError('Invalid phone number or password');
+    return redirect()->route('login');
     }
     
     public function logout(Request $request)

@@ -11,7 +11,7 @@ Route::get('/', function () {
 })->name('register');
 
 Route::get('/login', function () {
-    return view('auth.register');
+    return view('auth.login');
 })->name('login');
 
 Route::post('/register', [UserController::class, 'create'])->name('register.submit');
