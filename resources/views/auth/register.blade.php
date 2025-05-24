@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Khetibuddy - Register</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
   <style>
     body {
       background: linear-gradient(to right, #a8edea, #fed6e3);
@@ -15,6 +18,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
     }
 
     .register-wrapper {
@@ -72,6 +76,28 @@
       margin-bottom: 0;
     }
 
+    .password-wrapper {
+      position: relative;
+    }
+
+    .password-wrapper .form-control {
+      padding-right: 40px; /* space for the eye icon */
+    }
+
+    .password-toggle {
+      position: absolute;
+      top: 50%;
+      right: 14px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #888;
+      font-size: 18px;
+    }
+
+    #eye_icon{
+      margin-top: 28px;
+    }
+
     @media (max-width: 768px) {
       .register-wrapper {
         width: 95%;
@@ -111,13 +137,16 @@
         <label for="email">Email <span class="text-muted">(Optional)</span></label>
         <input type="email" class="form-control" name="uemail" id="email" value="{{ old('uemail') }}">
       </div>
-      <div class="mb-3">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" name="upassword" id="password" required>
-      </div>
+      <div class="mb-4 password-wrapper">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" name="upassword" id="password" required>
+      <span class="password-toggle">
+        <i class="fa fa-eye-slash toggle-password" id="eye_icon"></i> 
+      </span>
+    </div>
       <div class="mb-4">
         <label for="cpassword">Confirm Password</label>
-        <input type="password" class="form-control" name="ucpassword" id="cpassword" required>
+        <input type="password" class="form-control" name="ucpassword" id="ucpassword" required>
       </div>
       <button type="submit" class="btn btn-success w-100">Register</button>
     </form>
@@ -126,6 +155,31 @@
       Already have an account? <a class="text-info" onclick="window.location.href='{{ route('login') }}'">Login</a>
     </p>
   </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<!-- Password Show/Hide Script -->
+<script>
+    $(document).ready(function()
+        {
+            $('#eye_icon').on('click', function()
+            {
+                const passwordInput = $('#password');
+                const icon = $(this);
+                if (passwordInput.attr('type') === 'password')
+                {
+                    passwordInput.attr('type', 'text');
+                    icon.removeClass('fa-eye-slash').addClass('fa-eye');
+                }
+                else
+                {
+                    passwordInput.attr('type', 'password');
+                    icon.removeClass('fa-eye').addClass('fa-eye-slash');
+                }
+            });
+        });
+
+</script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>

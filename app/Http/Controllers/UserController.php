@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Crop;
 use Flasher\Laravel\Facade\Flasher;
+use Illuminate\Contracts\Support\ValidatedData;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
@@ -30,9 +31,15 @@ class UserController extends Controller
             'uemail' => 'nullable|email|unique:users,email',
             'upassword' => 'required|min:6|max:12',
             'ucpassword' => 'required|same:upassword',
+        ],[
+            'uphone.required' => 'Phone Number field is required',
+            'uphone.digits' => 'Phone Number field must be exactly 10 digits',
+            'upassword.required' => 'Password field is required',
+            'upassword.min' => 'Password must be at least 6 characters',
+            'ucpassword.same' => 'Confirm Password must be same as password.',
         ]);
         // Log::info('Registration data:', $request->all());
-       
+        
         $user = new User();
         $user->name = $request->uname;
         $user->phone_number = $request->uphone;
