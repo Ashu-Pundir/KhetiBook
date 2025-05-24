@@ -10,13 +10,12 @@
 
   <style>
     body {
-      background-color: #fefefe;
+      background-color: #f0f0e5;
       margin: 0;
       padding: 0;
     }
 
     .navbar-custom {
-      background-color: #366d24;
       border-bottom: 1px solid #cce0cc;
       color: white;
     }
@@ -29,7 +28,7 @@
     }
 
     .sidebar {
-      background-color: #8ec47c;
+      background-color: #9cc98d;
       height: 92vh;
       border-right: 1px solid #dee2e6;
     }
@@ -52,23 +51,48 @@
     }
 
     .form-section {
-      background-color: #8ec47c;
+      background-color: #9cc98d;
       padding: 2rem;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.05);
     }
+
+    .sidebar a.disabled-link {
+      pointer-events: none;
+      color: gray !important;
+      text-decoration: line-through !important;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .sidebar a.disabled-link:hover {
+      background-color: inherit !important;
+      color: gray !important;
+      font-weight: normal !important;
+    }
+
+    .back-btn:hover{
+      background-color: #14A44D;
+    }
+
+    .lg-btn:hover{
+        background-color: #137d3d;
+        color: white;
+    }
+
+
   </style>
 </head>
 
 <body>
   <!-- Navbar -->
-  <nav class="navbar navbar-custom d-flex justify-content-between align-items-center px-4 py-2">
+  <nav class="navbar navbar-custom d-flex justify-content-between align-items-center px-4 py-2 bg-success">
     <a href="#" class="navbar-brand fw-bold text-light">Khetibuddy</a>
     <div class="navbar-text-center">
       ID: {{ session('user')?->id ?? 'Guest' }}
     </div>
     <div>
-      <a href="{{ route('logout') }}" class="btn btn-outline-light btn-sm">Logout</a>
+      <a href="{{ route('logout') }}" class="btn btn-outline-light btn-sm lg-btn">Logout</a>
     </div>
   </nav>
 
@@ -80,14 +104,23 @@
         <h5 class="text-center mb-4 text-success">Menu</h5>
         <a href="{{ route('crop.dashboard') }}" class="{{ request()->routeIs('crop.dashboard') ? 'active' : '' }}">Dashboard</a>
         <a href="{{ route('crop.addcrop') }}" class="{{ request()->routeIs('crop.addcrop') ? 'active' : '' }}">Add New Crop</a>
-        <a href="{{ url('/my-crops') }}" class=" disabled {{ request()->is('my-crops') ? 'active' : '' }}">My Crops</a>
-        <a href="{{ url('/settings') }}" class=" disabled {{ request()->is('settings') ? 'active' : '' }}">Settings</a>
+        {{-- <a href="{{ url('/my-crops') }}" class=" disabled {{ request()->is('my-crops') ? 'active' : '' }}">My Crops</a>
+        <a href="{{ url('/settings') }}" class=" disabled {{ request()->is('settings') ? 'active' : '' }}">Settings</a> --}}
+        <a href="#" class="disabled-link">My Crops</a>
+        <a href="#" class="disabled-link">Settings</a>
       </div>
 
       <!-- Content -->
       <div class="col-md-9 d-flex align-items-center justify-content-center py-5">
         <div class="form-section w-75">
-          <h4 class="mb-4 text-success text-center">Add Crop Details</h4>
+
+          <div class="d-flex justify-content-between align-items-center mb-4">
+              <div></div> <!-- Empty div to push center heading -->
+              <h3 class="text-muted m-0 text-center flex-grow-1">Add Crop Details</h3>
+              <a href="{{ route('crop.dashboard') }}" class="btn btn-success btn-outline-secondary back-btn text-light">← Back</a>
+          </div>
+
+
           <form action="{{ route('crop.store') }}" method="POST">
             @csrf
             <div class="mb-3">

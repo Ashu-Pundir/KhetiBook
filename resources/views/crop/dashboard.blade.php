@@ -8,13 +8,15 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
 
   <style>
     :root {
-      --bg-main: #f9fafb;
+      --bg-main: #f0f0e5;
       --table-header: #e6ebe9;
-      --accent: #7a9e7e;
-      --text: #2d2d2d;
+      --accent: #8FBC8F;
+      --text: #36454F;
     }
     body {
       background-color: var(--bg-main);
@@ -31,7 +33,7 @@
       color: white;
     }
     .sidebar {
-      background-color: #8ec47c;
+      background-color: #9cc98d;
       height: 92vh;
       padding-top: 2rem;
     }
@@ -59,15 +61,60 @@
       padding: 0.3rem 0.6rem;
     }
 
+    #myInput:focus {
+        outline: none;
+        box-shadow: none;
+        border-color: #ced4da; /* Default Bootstrap border color */
+    }
+
+    .dataTables_filter {
+      float: left; /* Move to left if desired */
+      margin-bottom: 16px;
+    }
+
+    .dataTables_filter input {
+      padding: 4px 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      width: 200px;
+      box-shadow: none; /* removes blue border on focus */
+      outline: none;
+    }
+
+    .sidebar a.disabled-link {
+      pointer-events: none;
+      color: gray !important;
+      text-decoration: line-through !important;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .sidebar a.disabled-link:hover {
+      background-color: inherit !important;
+      color: gray !important;
+      font-weight: normal !important;
+    }
+
+
+    .dataTables_paginate {
+        display: none !important;
+      }
+
+    .lg-btn:hover{
+        background-color: #137d3d;
+        color: white;
+    }
+
+
   </style>
 </head>
 <body>
-
   <!-- Navbar -->
-  <nav class="navbar d-flex justify-content-between px-4 py-2">
+  <nav class="navbar d-flex justify-content-between px-4 py-2 bg-success">
     <div class="fw-bold text-light">Khetibuddy</div>
     <div class="navbar-text">{{ Auth::check() ? Auth::user()->name : 'Guest' }}</div>
-    <div><a href="{{ route('logout') }}" class="btn btn-outline-light btn-sm">Logout</a></div>
+    <div><a href="{{ route('logout') }}" class="btn btn-outline-light lg-btn btn-sm">Logout</a></div>
   </nav>
 
   <div class="container-fluid">
@@ -78,8 +125,10 @@
         <h5 class="text-center mb-4 text-success">Menu</h5>
         <a href="{{ route('crop.dashboard') }}" class="{{ request()->routeIs('crop.dashboard') ? 'active' : '' }}">Dashboard</a>
         <a href="{{ route('crop.addcrop') }}" class="{{ request()->routeIs('crop.addcrop') ? 'active' : '' }}">Add New Crop</a>
-        <a href="{{ url('/my-crops') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}">My Crops</a>
-        <a href="{{ url('/settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}">Settings</a>
+        {{-- <a href="{{ url('/my-crops') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}" class="disabled-link" >My Crops</a>
+        <a href="{{ url('/settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}" class="disabled-link" >Settings</a> --}}
+        <a href="#" class="disabled-link">My Crops</a>
+        <a href="#" class="disabled-link">Settings</a>
       </div>
 
       <!-- Main Content -->
@@ -93,7 +142,10 @@
 
         @if($crops->count() > 0)
         <div class="table-responsive">
-          <table class="table table-bordered table-striped align-middle text-center">
+          <div class="input-group mb-3 mt-2" style="max-width: 250px;">
+        </div>
+
+          <table class="table table-bordered table-striped bg-primary align-middle text-center rounded" id="crop-table">
             <thead>
               <tr>
                 <th>S.No</th>
@@ -145,12 +197,12 @@
           </div>
         </div>
         @else
-          <p class="text-center text-muted">No crop records found.</p>
+        <p class="text-center text-muted">No crop records found.</p>
         @endif
       </div>
     </div>
   </div>
-
+  
   <!-- Edit Modal -->
   <div class="modal fade" id="editCropModal" tabindex="-1" aria-labelledby="editCropModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -164,22 +216,22 @@
           </div>
           <div class="modal-body">
             <input type="hidden" id="crop_id" name="id">
-
+            
             <div class="mb-3">
               <label for="crop_name" class="form-label">Crop Name</label>
               <input type="text" class="form-control" id="crop_name" name="crop_name" required>
             </div>
-
+            
             <div class="mb-3">
               <label for="crop_category" class="form-label">Crop Category</label>
               <input type="text" class="form-control" id="crop_category" name="crop_category" required>
             </div>
-
+            
             <div class="mb-3">
               <label for="crop_weight" class="form-label">Weight (kg)</label>
               <input type="number" class="form-control" id="crop_weight" name="crop_weight" step="0.01" required>
             </div>
-
+            
             <div class="mb-3">
               <label for="crop_price" class="form-label">Price (₹)</label>
               <input type="number" class="form-control" id="crop_price" name="crop_price" step="0.01" required>
@@ -193,10 +245,12 @@
       </form>
     </div>
   </div>
-
+  
   <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
   <script>
     // Delete confirmation
@@ -258,6 +312,27 @@
           return new bootstrap.Tooltip(tooltipTriggerEl);
         });
       });
+
+      $(document).ready(function () {
+          let table = new DataTable('#crop-table',{
+            paging: false,
+
+          });
+
+          $('#searchBtn').on('click', function () {
+              let query = $('#myInput').val();
+              table.search(query).draw();
+          });
+
+          // Optional: trigger search when pressing Enter
+          $('#myInput').on('keypress', function (e) {
+              if (e.which == 13) {
+                  $('#searchBtn').click();
+              }
+          });
+      });
+
+
 
   </script>
 </body>

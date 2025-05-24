@@ -14,7 +14,7 @@ class CropController extends Controller
     public function index()
     {
         // Fetch only crops belonging to the authenticated user
-        $crops = Crop::where('user_id', Auth::id())->paginate(6);
+        $crops = Crop::where('user_id', Auth::id())->paginate(4);
         Log::info($crops);
         return view('crop.dashboard', compact('crops'));
     }
