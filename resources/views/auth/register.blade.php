@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Khetibuddy - Register</title>
+  <title>KhetiBook - Register</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -109,7 +109,7 @@
 <body>
 
   <div class="register-wrapper">
-    <div class="brand">Khetibuddy</div>
+    <div class="brand">KhetiBook</div>
 
     <div class="form-title">Register</div>
 
@@ -126,11 +126,11 @@
     <form method="POST" action="{{ route('register.submit') }}">
       @csrf
       <div class="mb-3">
-        <label for="name">Name</label>
+        <label for="name">Name*</label>
         <input type="text" class="form-control" name="uname" id="name" required value="{{ old('uname') }}">
       </div>
       <div class="mb-3">
-        <label for="phone">Phone Number</label>
+        <label for="phone">Phone Number*</label>
         <input type="text" class="form-control" name="uphone" id="phone" required maxlength="10" value="{{ old('uphone') }}">
       </div>
       <div class="mb-3">
@@ -138,14 +138,14 @@
         <input type="email" class="form-control" name="uemail" id="email" value="{{ old('uemail') }}">
       </div>
       <div class="mb-4 password-wrapper">
-      <label for="password">Password</label>
+      <label for="password">Password*</label>
       <input type="password" class="form-control" name="upassword" id="password" required>
       <span class="password-toggle">
         <i class="fa fa-eye-slash toggle-password" id="eye_icon"></i> 
       </span>
     </div>
       <div class="mb-4">
-        <label for="cpassword">Confirm Password</label>
+        <label for="cpassword">Confirm Password*</label>
         <input type="password" class="form-control" name="ucpassword" id="ucpassword" required>
       </div>
       <button type="submit" class="btn btn-success w-100">Register</button>

@@ -21,7 +21,7 @@
     </style>
 </head>
 <body>
-    <h1>Khetibuddy Crop Report</h1>
+    <h1>KhetiBook Crop Report</h1>
     <h2>{{ $user->name }}</h2>
     </div>
     

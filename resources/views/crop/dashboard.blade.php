@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Khetibuddy | My Crops</title>
+  <title>KhetiBook | My Crops</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
@@ -118,7 +118,7 @@
 <body>
   <!-- Navbar -->
   <nav class="navbar d-flex justify-content-between px-4 py-2 bg-success">
-    <div class="fw-bold text-light">Khetibuddy</div>
+    <div class="fw-bold text-light">KhetiBook</div>
     <div class="navbar-text">{{ Auth::check() ? Auth::user()->name : 'Guest' }}</div>
     <div><a href="{{ route('logout') }}" class="btn btn-outline-light lg-btn btn-sm">Logout</a></div>
   </nav>
