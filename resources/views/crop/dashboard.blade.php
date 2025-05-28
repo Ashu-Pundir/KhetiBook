@@ -106,18 +106,69 @@
         color: white;
     }
 
+    .icon{
+        display: flex;
+        justify-content: right;
+        font-size: x-large;
+        color: #198754;
+        padding-right: 14px;
+        margin-bottom: 20px
+    }
+
+    .sidebar-hide{
+      background-color: #9cc98d;
+      height: 92vh;
+      padding-top: 2rem;
+      width: 10vh;
+    }
+
+    .sidebar.hide a span{
+      display: none;
+    }
+
+    .sidebar.hide h5{
+      display: none;
+      margin-bottom: 5px;
+    }
+    
+    .main-content-hide{
+      width: 92%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+
     @media (max-width: 768px) {
       .sidebar {
         height: 50%;
-        
+        display: none;
       }
     }
 
+    @media(min-width: 769px and max-width: 917px){
+      .sidebar-hide{
+        height: 100vh;
+      }
+    }
+
+    @media(max-width:768px and min-width:593px){
+      .sidebar-hide{
+        height: 185vh;
+      }
+    }
+
+    @media(max-width:592px){
+      .no-icon{
+        display: :none !important;
+      }
+    }
   </style>
 </head>
 <body>
   <!-- Navbar -->
-  <nav class="navbar d-flex justify-content-between px-4 py-2 bg-success">
+  <nav class="navbar d-flex justify-content-between px-4 py-2 bg-success col-sm-12">
     <div class="fw-bold text-light">KhetiBook</div>
     <div class="navbar-text">{{ Auth::check() ? Auth::user()->name : 'Guest' }}</div>
     <div><a href="{{ route('logout') }}" class="btn btn-outline-light lg-btn btn-sm">Logout</a></div>
@@ -128,17 +179,20 @@
 
       <!-- Sidebar -->
       <div class="col-md-3 sidebar">
+        <div class="icon">
+          <i class="fa-solid fa-bars " id="icon"></i>
+        </div>
         <h5 class="text-center mb-4 text-success">Menu</h5>
-        <a href="{{ route('crop.dashboard') }}" class="{{ request()->routeIs('crop.dashboard') ? 'active' : '' }}">Dashboard</a>
-        <a href="{{ route('crop.addcrop') }}" class="{{ request()->routeIs('crop.addcrop') ? 'active' : '' }}">Add New Crop</a>
+        <a href="{{ route('crop.dashboard') }}" class="{{ request()->routeIs('crop.dashboard') ? 'active' : '' }}"><i class="fa-brands fa-dashcube"></i>  <span>Dashboard</span></a>
+        <a href="{{ route('crop.addcrop') }}" class="{{ request()->routeIs('crop.addcrop') ? 'active' : '' }}"><i class="fa-solid fa-plus"></i>  <span>Add New Crop </span></a>
         {{-- <a href="{{ url('/my-crops') }}" class="{{ request()->is('my-crops') ? 'active' : '' }}" class="disabled-link" >My Crops</a>
         <a href="{{ url('/settings') }}" class="{{ request()->is('settings') ? 'active' : '' }}" class="disabled-link" >Settings</a> --}}
-        <a href="#" class="disabled-link">My Crops</a>
-        <a href="#" class="disabled-link">Settings</a>
-      </div>
+        <a href="#" class="disabled-link"><i class="fa-solid fa-wheat-awn"></i>  <span>My Crops</span></a>
+        <a href="#" class="disabled-link"><i class="fa-solid fa-gear"></i>  <span>Settings</span></a>
+      </div>  
 
       <!-- Main Content -->
-      <div class="col-md-9 main-content">
+      <div class="col-md-9 col-12 main-content">
         <h3 class="mb-4 text-muted text-center">Your Crop Records</h3>
 
         @if($crops->count() > 0)
@@ -336,9 +390,16 @@
                   $('#searchBtn').click();
               }
           });
+
+          // sidebar-toggle
+          $('#icon').on('click', function(){
+            $('.sidebar').toggleClass('sidebar-hide');
+            $('.sidebar').toggleClass('hide');
+            $('.main-content').toggleClass('main-content-hide');
+            $('.sidebar').addClass('.no-icon');
+          });
       });
-
-
+      
 
   </script>
 </body>
