@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CropController;
 use App\Http\Controllers\PDFController;
 use Illuminate\Support\Facades\Route;
@@ -35,5 +36,15 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/crop/delete/{id}', [CropController::class, 'destroy'])->name('crop.delete');
 
     Route::get('/generate-pdf', [PDFController::class, 'createPDF'])->name('crops.pdf');
+    Route::get('/admin/dashboard', [AdminController::class, 'show'])->name('admin.dashboard');
+
 
 });
+
+// Admin Routes
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'login'])->name('admin-login.submit');
+Route::get('/admin/user-edit/{id}', [AdminController::class, 'viewUser'])->name('admin.users.show');
+Route::get('/admin/user-delete/{id}', [AdminController::class, 'deleteUser'])->name('admin.users.destroy');
+Route::get('/admin/usersPdf',[PDFController::class , 'alluserPDF'])->name('admin.users.downloadPdf');
+Route::get('/admin/allcrops',[PDFController::class , 'allcrops'])->name('admin.allcrops');

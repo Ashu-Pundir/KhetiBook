@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,4 +19,11 @@ class PDFController extends Controller
         // return view('pdf.crops', compact('crops'));
         return $pdf->download('crop_report.pdf');
     }
-}
+
+
+        public function alluserPDF(){
+            $users = User::where('phone_number', '!=', '1122334466')->get();
+            $pdf = pdf::loadView('admin.usersPdf', compact('users'));
+            return $pdf->download('allusers.pdf');
+        }
+    }

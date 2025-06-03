@@ -95,6 +95,13 @@
       margin-top: 28px;
     }
 
+    .admin-logo{
+
+      
+
+    }
+
+
     @media (max-width: 768px) {
       .login-wrapper {
         width: 95%;
@@ -109,10 +116,10 @@
   <div class="brand">KhetiBook</div>
   <div class="position-relative mb-3">
   <div class="text-center">
-    <div class="form-title">Login</div>
+    <div class="form-title">Admin Login</div>
   </div>
   <div class="position-absolute top-0 end-0">
-    <a href="{{ route('admin.login') }}" class="btn btn-outline-success btn-sm">Admin Login</a>
+    <a href="{{ route('login') }}" class="btn btn-outline-success btn-sm">Back</a>
   </div>
 </div>
 
@@ -123,7 +130,7 @@
     </div>
   @endif
 
-  <form method="POST" action="{{ route('login.submit') }}">
+  <form method="POST" action="{{ route('admin-login.submit') }}">
     @csrf
     <div class="mb-3">
       <label for="phone">Phone Number</label>
@@ -138,14 +145,8 @@
       </span>
     </div>
 
-    <button type="submit" class="btn btn-success w-100">Login</button>
+    <button type="submit" class="btn btn-success w-100">Admin Login</button>
   </form>
-
-  <p class="mt-3 text-center">
-    Don't have an account?
-    <a class="text-info" href="{{ route('register') }}">Register</a>
-  </p>
-</div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 

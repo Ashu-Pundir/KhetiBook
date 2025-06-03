@@ -36,6 +36,7 @@
       background-color: #9cc98d;
       height: 92vh;
       padding-top: 2rem;
+      transition: all 0.25s ease-out; 
     }
     .sidebar a {
       margin: 2px;
@@ -120,15 +121,16 @@
       height: 92vh;
       padding-top: 2rem;
       width: 10vh;
+      transition: all 0.25s ease-out;
     }
-
+    
     .sidebar.hide a span{
       display: none;
     }
-
+    
     .sidebar.hide h5{
       display: none;
-      margin-bottom: 5px;
+      margin-bottom: 5px;`
     }
     
     .main-content-hide{
@@ -137,6 +139,7 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      transition: all 0.25s ease-out; 
     }
 
 
@@ -178,7 +181,7 @@
     <div class="row">
 
       <!-- Sidebar -->
-      <div class="col-md-3 sidebar">
+      <div class="col-md-2 sidebar">
         <div class="icon">
           <i class="fa-solid fa-bars " id="icon"></i>
         </div>
@@ -192,7 +195,7 @@
       </div>  
 
       <!-- Main Content -->
-      <div class="col-md-9 col-12 main-content">
+      <div class="col-md-10 col-sm-12 main-content">
         <h3 class="mb-4 text-muted text-center">Your Crop Records</h3>
 
         @if($crops->count() > 0)

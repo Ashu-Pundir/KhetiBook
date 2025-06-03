@@ -31,6 +31,13 @@ class UserController extends Controller
             'uemail' => 'nullable|email|unique:users,email',
             'upassword' => 'required|min:6|max:12',
             'ucpassword' => 'required|same:upassword',
+            'city' => 'required|string|max:80',
+            'district' => 'required|string|',
+            'state' => 'required|string|',
+            'pincode' => 'required|digits_between:4,10',
+            'country' => 'required|string|',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
         ],[
             'uphone.required' => 'Phone Number field is required',
             'uphone.digits' => 'Phone Number field must be exactly 10 digits',
@@ -45,6 +52,14 @@ class UserController extends Controller
         $user->phone_number = $request->uphone;
         $user->email = $request->uemail;
         $user->password = Hash::make($request->upassword);
+        $user->city = $request->city;
+        $user->district = $request->district;
+        $user->state = $request->state;
+        $user->pincode = $request->pincode;
+        $user->country = $request->country;
+        $user->latitude = $request->latitude;
+        $user->longitude = $request->longitude;
+
         $user->save();
         Flasher::addSuccess('Registration Successfull');
         return redirect()->route('login');  
@@ -64,7 +79,7 @@ class UserController extends Controller
     $user = User::where('phone_number', $credentials['uphone'])->first();
 
     if ($user && Hash::check($credentials['upassword'], $user->password)) {
-        Auth::login($user);
+        Auth::login($user   );
         $request->session()->regenerate();
         Flasher::addSuccess('User logged in Successfully');
         return redirect()->route('crop.dashboard');
